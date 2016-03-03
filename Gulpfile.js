@@ -69,8 +69,5 @@ gulp.task('stream', function() {
 	gulp.watch(sources_files.css, ['build-scss'])
 });
 
-gulp.task('default', [
-	'open',
-	'stream',
-]);
+gulp.task('default', ['stream']);
 
