@@ -13,45 +13,17 @@ var plumber = require("gulp-plumber");
 var livereload = require("gulp-livereload");
 
 var sources_files = {
-	"styles": "app/scss/styles.scss",
-	"scss": "app/scss/*.scss",
-	"css": "app/css/**/*.css",
+	"styles": "public/scss/styles.scss",
+	"scss": "public/scss/*.scss",
+	"css": "public/css/**/*.css",
 };
-var config = {
-	port: 8888,
-	paths: {
-		html: "app/index.html",
-	}
-}
-
-gulp.task("connect", function() {
-	connect.server({
-		root: "app/",
-		port: config.port,
-		livereload: true
-	});
-});
-
-function swallowError (error) {
-	// If you want details of the error in the console
-	console.log(error.toString());
-	this.emit('end');
-}
-
-gulp.task('open', ['connect'], function() {
-	gulp.src(config.paths.html)
-		.pipe(gulpOpen({
-			uri: 'http://localhost:8888/index.html',
-			app: 'Google Chrome'
-		}));
-});
 
 gulp.task('build-scss', function() {
 	gulp.src(sources_files.styles)
 		.pipe(plumber())//check error
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
-		.pipe(sourcemaps.write('app/css/maps/'))
+		.pipe(sourcemaps.write('public/css/maps/'))
 		.pipe(concat('styles.min.css'))
 		.pipe(minifyCSS())
 		.pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
@@ -59,7 +31,7 @@ gulp.task('build-scss', function() {
             gutil.log(err);
             this.emit('end');
         })
-		.pipe(gulp.dest('app/css/'))
+		.pipe(gulp.dest('public/css/'))
 		.pipe(livereload());
 });
 
@@ -67,6 +39,10 @@ gulp.task('stream', function() {
 	livereload.listen();
 	gulp.watch(sources_files.scss, ['build-scss'])
 	gulp.watch(sources_files.css, ['build-scss'])
+});
+
+gulp.task('build', function() {
+
 });
 
 gulp.task('default', ['stream']);

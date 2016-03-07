@@ -1,3 +1,8 @@
+
+###### HOW TO INSTALL COMPONENTS
+```bower install -S {components}```,
+```npm install --save-dev {components}```
+
 Run this code in your terminal.
 ```
 npm install
