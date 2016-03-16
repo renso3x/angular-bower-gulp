@@ -16,6 +16,7 @@ var sources_files = {
 	"styles": "public/scss/styles.scss",
 	"scss": "public/scss/*.scss",
 	"css": "public/css/**/*.css",
+	"components": "public/scss/components/*.scss"
 };
 
 gulp.task('build-scss', function() {
@@ -39,6 +40,7 @@ gulp.task('stream', function() {
 	livereload.listen();
 	gulp.watch(sources_files.scss, ['build-scss'])
 	gulp.watch(sources_files.css, ['build-scss'])
+	gulp.watch(sources_files.components, ['build-scss'])
 });
 
 gulp.task('build', function() {
