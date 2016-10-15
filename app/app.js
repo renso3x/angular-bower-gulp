@@ -1,19 +1,22 @@
 (function() {
 	'use strict';
 
-	var app = angular.module("SampleApp", [
+	angular.module("SampleApp", [
 		"ui.router",
+		"ui.bootstrap",
+		"booking.controller"
 	]).config(function($stateProvider, $urlRouterProvider) {
-		$urlRouterProvider.otherwise("homepage");
+		$urlRouterProvider.otherwise("/");
+
+		var app = {
+			url: "/",
+			templateUrl: 'app/components/booking/booking.html',
+			controller: 'BookingController',
+			controllerAs: 'vm'
+		}
 
 		$stateProvider
-			.state("homepage", {
-				url: "/homepage",
-				templateUrl: "app/views/homepage.html"
-			})
-			.state("dashboard", {
-				url: "/dashboard",
-				templateUrl: "app/views/dashboard.html"
-			});
-	});
+			.state('app', app)
+	})
+
 })();

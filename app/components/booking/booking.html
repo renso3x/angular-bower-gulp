@@ -1,0 +1,119 @@
+<div class="container">
+
+	<div class="row">
+		<h3 class="text-center">Big Town Cinema Ticketing System</h3>
+		<h5 class="text-center">Now Showing: <a href="">The Shawshank Redemption (1994)</a></h5>
+		<div class="col-md-12">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Reservation Date & Seats</div>
+					<div class="panel-body">
+						<p>
+							<select class="form-control" ng-model="vm.reserveDate" ng-change="vm.selectedDate()">
+								<option value="20170106">01/01/2017</option>
+								<option value="20170206">01/02/2017</option>
+							</select>
+						</p>
+						<div class="well">
+							<h3 class="text-center">SCREEN</h3>
+							<table class="table">
+								<tbody ng-repeat="seatsArr in vm.seatsArr track by $index" 
+									ng-init="parentIndex = $index">
+									<tr ng-repeat="seats in seatsArr" id="{{$index}}">
+										<td id="{{$index}}" 
+											class="td-default" 
+											ng-repeat="seat in seats | filter: vm.reserveDate" 
+											ng-click="vm.occupySeat(parentIndex, seatsArr, seats, seat, $index)"
+											ng-class="{'td-choosed': seat.reserved == true, 'td-occupy': seat.reserved == 'occuped' }">
+											{{seat.name}}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Reservation Form</div>
+					<div class="panel-body">
+						<form ng-submit="userForm.$valid && vm.submitReservation()" name="userForm" novalidate>
+							<div class="form-group">
+								<label for="date">Date</label>
+								<input type="text" class="form-control" id="date" placeholder="Date" ng-model="vm.user.date">
+							</div>
+							<div class="form-group">
+								<label for="seat">Seats</label>
+								<p ng-if="vm.user.seats == 0"> Please select a seat.</p>
+								<ul class="list-inline">
+									<li ng-repeat="seat in vm.user.seats">#{{seat.name}}</li>
+								</ul>
+							</div>
+							<div class="form-group">
+								<label for="name">Name</label>
+								<input type="text" class="form-control" id="name" placeholder="Name" ng-model="vm.user.name" required>
+							</div>
+							<div class="form-group">
+								<label for="email">Email</label>
+								<input type="email" class="form-control" id="email" placeholder="Email" ng-model="vm.user.email" required>
+							</div>
+							<div class="form-group">
+								<label for="number">Mobile #</label>
+								<input type="number" class="form-control" id="number" placeholder="Mobile #" ng-model="vm.user.mobile" ng-pattern="/^[0-9]{1,6}$/" required>
+							</div>
+							<button type="submit" class="btn btn-lg btn-primary" ng-disabled="userForm.$invalid">Reserve</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">Reserved Users</div>
+				<div class="panel-body">
+					<table class="table">
+						<thead>
+							<th>Transaction #</th>
+							<th>Date</th>
+							<th>Ticket</th>
+							<th>Name</th>
+							<th>Status</th>
+							<th>Action</th>
+						</thead>
+						<tbody>
+							<tr ng-repeat="customer in vm.customers track by $index" 
+								ng-init="customer.edit == false;customer.paid == false"
+								ng-class="{'active': !customer.paid, 'success': customer.paid}">
+								<td>{{customer.transac_id}}</td>
+								<td>{{customer.date}}</td>
+								<td>
+									<ul class="list-inline">
+										<li ng-repeat="seats in customer.seats">
+											{{seats.name}}
+										</li>
+									</ul>
+								</td>
+								<td>{{customer.name}}</td>
+								<td>
+									<p ng-hide="customer.edit">{{customer.status}}</p>
+									<select class="form-control" ng-model="vm.reserveStatus" ng-if="customer.edit">
+										<option value="Reserved"> Reserved</option>
+										<option value="Paid"> Paid</option>
+										<option value="Cancelled"> Cancelled</option>
+									</select>
+								</td>
+								<td>
+									<button ng-if="customer.edit" class="btn btn-success" ng-click="vm.updateInfo($index, vm.reserveStatus)">Save</button>
+									<button ng-if="customer.edit" class="btn btn-default" ng-click="vm.cancelUpdate($index, customer.status)">Cancel</button>
+									<button ng-hide="customer.edit" class="btn btn-info" ng-click="customer.edit = true" ng-disabled="customer.paid">Edit</button>
+									<button class="btn btn-warning" ng-click="vm.deleteRow($index)" ng-hide="customer.edit" ng-disabled="customer.paid">Delete</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

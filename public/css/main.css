@@ -1,0 +1,12 @@
+.td-default {
+	background: green;
+	color: #fff;
+}
+.td-occupy {
+	background: grey;
+	color: #fff;
+}
+.td-choosed {
+	background: yellow;
+	color: #000;
+}
